@@ -1,6 +1,7 @@
 package org.usfirst.frc5933.KitBot2018.commands;
 
 import org.usfirst.frc5933.KitBot2018.Robot;
+import org.usfirst.frc5933.KitBot2018.subsystems.Arm.ArmPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -21,7 +22,7 @@ public class MoveArmVBus extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.arm.moveArmVBus(Robot.oi.getSubStick().getY());
+    	Robot.arm.armPositionControl(ArmPosition.VBus, Robot.oi.getSubStick().getY());
     }
 
     // Make this return true when this Command no longer needs to run execute()

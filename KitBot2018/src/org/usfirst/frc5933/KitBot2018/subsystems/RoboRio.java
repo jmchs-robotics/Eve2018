@@ -29,10 +29,10 @@ public class RoboRio extends Subsystem {
 	}
 
 	/**
-	 * Read all digital inputs (0-9) and return an integer representation of their state.
+	 * Read all digital inputs (0-9) and return an integer representation of their state, summed from their binary inputs.
 	 * @return
 	 */
-	public int readDIPS() {
+	public int readDips() {
 		int val = 0;
 
 		for(int i = 0; i < DIPs.length; i++) {

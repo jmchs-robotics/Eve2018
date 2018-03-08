@@ -42,7 +42,8 @@ public class Arm extends Subsystem {
 		Switch(20),
 		Scale(-450),
 		Start(0),
-		Continuous(0);
+		Continuous(0),
+		VBus(0);
 
 		private final int pos;
 		private ArmPosition(int encoderPos) {
@@ -81,43 +82,21 @@ public class Arm extends Subsystem {
 		SmartDashboard.putString("Actual last position control", lastPos.name());
 
 		switch(pos) {
-		//		case CubeOnGround:
-		//			bigUn.set(ControlMode.Position, ArmPosition.CubeOnGround.getPos());
-		//			break;
-		//		case CubeOneUp:
-		//			bigUn.set(ControlMode.Position, ArmPosition.CubeOneUp.getPos());
-		//			break;
-		//		case CubeTwoUp:
-		//			bigUn.set(ControlMode.Position, ArmPosition.CubeTwoUp.getPos());
-		//			break;
-		//		case Exchange:
-		//			bigUn.set(ControlMode.Position, ArmPosition.Exchange.getPos());
-		//			break;
-		//		case Switch:
-		//			bigUn.set(ControlMode.Position, ArmPosition.Switch.getPos());
-		//			break;
-		//		case Scale:
-		//			bigUn.set(ControlMode.Position, ArmPosition.Scale.getPos());
-		//			break;
-		//		case Start:
-		//			bigUn.set(ControlMode.Position, ArmPosition.Start.getPos());
-		//			break;
 		case Continuous:
 			//get continuous position from joystick controller
 			//Range needs to be condensed to values from -1 to 1
 			continuousArmPositionControl(continuousInput);
 			break;
+		case VBus:
+			bigUn.set(ControlMode.PercentOutput, continuousInput);
+			break;
 		default:
 			bigUn.set(ControlMode.Position, pos.getPos());
 		}
 
-		if(getArmSwitch() > 0 && !getWithinThreshold(kArmMinimumEncoderPos, 2)) {
+		if(getLowerArmSwitch() > 0 && !getWithinThreshold(kArmMinimumEncoderPos, 2)) {
 			bigUn.setSelectedSensorPosition(ArmPosition.CubeOnGround.pos, 0, 10);
 		}
-	}
-
-	public void moveArmVBus(double vBus) {
-		bigUn.set(ControlMode.PercentOutput, vBus);
 	}
 
 	/**
@@ -182,9 +161,18 @@ public class Arm extends Subsystem {
 	 * @return
 	 * 0 if open (false, signal NOT connected to ground); 1 if closed (true, signal connected to ground)
 	 */
-	public int getArmSwitch() {
+	public int getLowerArmSwitch() {
 		return Robot.roborio.readDips(9, 10, true);
 	}	
+	
+	/**
+	 * Gets the status uf the upper arm switch (DIP 8).
+	 * @return
+	 * 0 if open (false, signal NOT connected to ground); 1 if closed (true, signal connected to ground)
+	 */
+	public int getUpperArmSwitch() {
+		return Robot.roborio.readDips(8, 9, true);
+	}
 
 	public void setArmFeedback(int timeoutMs) {
 		resetEncoder();
@@ -199,8 +187,12 @@ public class Arm extends Subsystem {
 		bigUn.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		bigUn.setSelectedSensorPosition(ArmPosition.Start.pos, 0, 10);
 
-		if(getArmSwitch() > 0) {
+		if(getLowerArmSwitch() > 0) {
 			bigUn.setSelectedSensorPosition(ArmPosition.CubeOnGround.pos, 0, 10);
+		}
+		
+		if(getUpperArmSwitch() > 0) {
+			bigUn.setSelectedSensorPosition(ArmPosition.Scale.pos, 0, 10);
 		}
 
 	}

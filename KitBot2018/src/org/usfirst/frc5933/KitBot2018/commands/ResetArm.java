@@ -1,6 +1,7 @@
 package org.usfirst.frc5933.KitBot2018.commands;
 
 import org.usfirst.frc5933.KitBot2018.Robot;
+import org.usfirst.frc5933.KitBot2018.subsystems.Arm.ArmPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,11 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class ResetArm extends Command {
+	boolean resetToGround;
 
-    public ResetArm() {
+    public ResetArm(boolean resetToGroundPosition) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.arm);
+    	
+    	resetToGround = resetToGroundPosition;
     }
 
     // Called just before this Command runs the first time
@@ -23,12 +27,16 @@ public class ResetArm extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.arm.moveArmVBus(0.2);
+    	if(resetToGround) {
+    	Robot.arm.armPositionControl(ArmPosition.VBus, 0.2);
+    	}else {
+    		Robot.arm.armPositionControl(ArmPosition.VBus, -0.4);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.arm.getArmSwitch() == 1;
+        return Robot.arm.getLowerArmSwitch() == 1;
     }
 
     // Called once after isFinished returns true

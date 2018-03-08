@@ -175,7 +175,7 @@ public class AutonomousTestGroup extends CommandGroup {
 			addSequential(new OpenTongs(true));
 			addSequential(new EjectCube(0.2));
 			
-		}else if(Robot.roborio.readDIPS() == 4 && message.substring(1,2).equalsIgnoreCase("r")){ //on RIGHT side, Scale shot, DIPS in 2 
+		}else if(Robot.roborio.readDips() == 4 && message.substring(1,2).equalsIgnoreCase("r")){ //on RIGHT side, Scale shot, DIPS in 2 
 			addParallel(new MoveArmToPos(ArmPosition.Scale, false));
 			addSequential(new DriveStraightGyro(225, 1, true));
 
@@ -187,7 +187,7 @@ public class AutonomousTestGroup extends CommandGroup {
 			addParallel(new MoveArmToPos(ArmPosition.CubeOnGround, false));
 			addSequential(new DriveStraightGyro(-220, 1, true));
 
-		}else if(Robot.roborio.readDIPS() == 2 && message.substring(1,2).equalsIgnoreCase("l")){ //on left side, Scale shot, DIPS in 1 
+		}else if(Robot.roborio.readDips() == 2 && message.substring(1,2).equalsIgnoreCase("l")){ //on left side, Scale shot, DIPS in 1 
 			addParallel(new MoveArmToPos(ArmPosition.Scale, false));
 			addSequential(new DriveStraightGyro(225, 1, true));
 

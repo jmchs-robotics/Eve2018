@@ -22,7 +22,7 @@ public class RoboRioDefault extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putNumber("DIPs: ", Robot.roborio.readDIPS());
+    	SmartDashboard.putNumber("DIPs: ", Robot.roborio.readDips());
     }
 
     // Make this return true when this Command no longer needs to run execute()
