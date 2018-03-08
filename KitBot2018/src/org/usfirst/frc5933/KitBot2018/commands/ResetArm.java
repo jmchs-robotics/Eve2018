@@ -28,7 +28,7 @@ public class ResetArm extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(resetToGround) {
-    	Robot.arm.armPositionControl(ArmPosition.VBus, 0.2);
+    		Robot.arm.armPositionControl(ArmPosition.VBus, 0.2);
     	}else {
     		Robot.arm.armPositionControl(ArmPosition.VBus, -0.4);
     	}

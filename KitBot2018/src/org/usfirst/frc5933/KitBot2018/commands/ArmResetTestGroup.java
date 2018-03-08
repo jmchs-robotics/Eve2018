@@ -27,10 +27,12 @@ public class ArmResetTestGroup extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	
-    	addSequential(new ResetArm());
+    	testResettingArm();
+    }
+    
+    private void testResettingArm() {
+    	addSequential(new ResetArm(true));
     	
     	addSequential(new MoveArmToPos(ArmPosition.Scale, false));
-    	
-    	
     }
 }
