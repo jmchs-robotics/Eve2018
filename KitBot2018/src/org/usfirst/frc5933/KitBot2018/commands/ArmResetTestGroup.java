@@ -35,4 +35,4 @@ public class ArmResetTestGroup extends CommandGroup {
     	
     	addSequential(new MoveArmToPos(ArmPosition.Scale, false));
     }
-}
+} 
