@@ -3,6 +3,7 @@ package org.usfirst.frc5933.KitBot2018.subsystems;
 import org.usfirst.frc5933.KitBot2018.Robot;
 import org.usfirst.frc5933.KitBot2018.RobotMap;
 import org.usfirst.frc5933.KitBot2018.commands.DefaultArm;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -152,7 +153,7 @@ public class Arm extends Subsystem {
 
 		bigUn.configNominalOutputForward(0, 10);
 		bigUn.configNominalOutputReverse(0, 10);
-		bigUn.configPeakOutputForward(1, 10);
+		bigUn.configPeakOutputForward(0.2, 10);//bigUn.configPeakOutputForward(1, 10);
 		bigUn.configPeakOutputReverse(-1, 10);
 	}
 
