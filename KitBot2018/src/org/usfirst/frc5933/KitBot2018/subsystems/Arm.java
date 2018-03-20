@@ -155,10 +155,12 @@ public class Arm extends Subsystem {
 		bigUn.configNominalOutputReverse(0, 10);
 		bigUn.configPeakOutputForward(0.2, 10);//bigUn.configPeakOutputForward(1, 10);
 		bigUn.configPeakOutputReverse(-1, 10);
+		
+		bigUn.configClosedloopRamp(0.5, 10); //seconds to full frontal val. Should help stop swinging. Could also use d-coeff.
 	}
 
 	/**
-	 * Gets the status of the Arm switch (DIP 9).
+	 * Gets the status of the lower Arm switch (DIP 9) as per hardware upgrade between Utah and Idaho regionals.
 	 * @return
 	 * 0 if open (false, signal NOT connected to ground); 1 if closed (true, signal connected to ground)
 	 */
@@ -167,7 +169,7 @@ public class Arm extends Subsystem {
 	}	
 	
 	/**
-	 * Gets the status uf the upper arm switch (DIP 8).
+	 * Gets the status of the upper arm switch (DIP 8) as per hardware upgrade between Utah and Idaho regionals.
 	 * @return
 	 * 0 if open (false, signal NOT connected to ground); 1 if closed (true, signal connected to ground)
 	 */
@@ -195,7 +197,6 @@ public class Arm extends Subsystem {
 		if(getUpperArmSwitch() > 0) {
 			bigUn.setSelectedSensorPosition(ArmPosition.Scale.pos, 0, 10);
 		}
-
 	}
 
 	public boolean getWithinThreshold(int pos, int threshold) {
