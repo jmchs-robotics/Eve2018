@@ -124,11 +124,14 @@ public class OI {
 
 		subStick = new Joystick(1);
 
-//		subA = new JoystickButton(subStick, 1);
-//		subA.whenPressed(new NullCommand());
-//		        
-//		subB = new JoystickButton(subStick, 2);
-//		subB.whenPressed(new NullCommand());
+		/*
+		 * 181212 enabling subA and subB and using to raise/lower the arm
+		 */
+		subA = new JoystickButton(subStick, 1);
+		subA.whileHeld(new MoveArmUp());
+		        
+		subB = new JoystickButton(subStick, 2);
+		subB.whileHeld(new MoveArmDown());
 
 		subX = new JoystickButton(subStick, 3);
 		subX.whileHeld(new VariableCubeControl_Eject());
@@ -148,9 +151,10 @@ public class OI {
 //		subStart = new JoystickButton(subStick, 8);
 //		subStart.whenPressed(new NullCommand());
 
-		subLStick = new JoystickButton(subStick, 9);
-		subLStick.whenPressed(new MoveArmToPos(ArmPosition.Continuous, false));
-		subLStick.whenReleased(new MoveArmToPos(ArmPosition.Start, false));
+		// all of subLStick commented out 181212
+		// subLStick = new JoystickButton(subStick, 9);  
+		// subLStick.whenPressed(new MoveArmToPos(ArmPosition.Continuous, false));
+		// subLStick.whenReleased(new MoveArmToPos(ArmPosition.Start, false));
 
 //		subRStick = new JoystickButton(subStick, 10);
 //		subRStick.whenPressed(new NullCommand());

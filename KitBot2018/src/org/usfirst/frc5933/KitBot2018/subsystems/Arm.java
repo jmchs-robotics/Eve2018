@@ -68,7 +68,26 @@ public class Arm extends Subsystem {
 		//setDefaultCommand(new MySpecialCommand());
 		setDefaultCommand(new DefaultArm());
 	}
-
+	
+	/*
+	 * 181212
+	 * Wind the winch, to raise the arm
+	 */
+	public void armUp() {
+		SmartDashboard.putString( "Current or last command is to move arm ", "up");
+		bigUn.set(ControlMode.PercentOutput, 0.7);
+	}
+	
+	/*
+	 * 181212
+	 * Unwind the winch, to lower the arm
+	 */
+	public void armDown() {
+		SmartDashboard.putString( "Current or last command is to move arm ", "down");
+		bigUn.set(ControlMode.PercentOutput, -0.7);
+	}
+	
+	
 	/**
 	 * There are some magic numbers in here! They are set in the ArmPosition enum.
 	 * @param pos
