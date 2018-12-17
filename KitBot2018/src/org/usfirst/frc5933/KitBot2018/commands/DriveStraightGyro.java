@@ -15,6 +15,8 @@ public class DriveStraightGyro extends Command {
 	double vBus;
 	double initialHeading;
 	boolean useFeedback;
+	double direction;
+	double distThisLeg;
 	
     public DriveStraightGyro(double timeToRun, double percentVBus) {
         // Use requires() here to declare subsystem dependencies
@@ -26,24 +28,33 @@ public class DriveStraightGyro extends Command {
     	useFeedback = false;
     }
     
+    //
+    /**
+     * 
+     * @param inches Needs to be negative for backwards movement, positive otherwise.
+     * @param percentVBus Requires same sign as inches.
+     * @param useEncoders TRUE to use encoders.
+     */
     public DriveStraightGyro(double inches, double percentVBus, boolean useEncoders) {
     	requires(Robot.drivetrain);
     	
     	endVal = inches * Drivetrain.kEncoderTicksPerInch;
+    	distThisLeg = endVal;
     	vBus = percentVBus;
     	useFeedback = useEncoders;
+
+    	//direction is positive for forwards and negative for backwards.
+    	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	try {
-    		Thread.sleep(10);
-    	}catch(Exception e) {}
-    	SmartDashboard.putString("Current Command: ", "DriveStraightGyro");
-    	
+    	// set our target position as current position plus desired distance
+    	endVal += Robot.drivetrain.getRightEncoderPos(0);
+    	// get the robot's current direction, so we can stay pointed that way
     	initialHeading = Robot.drivetrain.getGyroHeading();
-    	Robot.drivetrain.resetEncoders();
     	
+    	// if we don't want to use the encoders, set a duration to drive
     	if(!useFeedback)
     		setTimeout(endVal);
     }
@@ -53,8 +64,10 @@ public class DriveStraightGyro extends Command {
     	double proportion = Drivetrain.kPGyroConstant * (Robot.drivetrain.getGyroHeading() - initialHeading);
     	double coefficient = 1;
     	
-    	if(useFeedback) {
-    		coefficient = Math.pow((endVal - Robot.drivetrain.getRightEncoderPos(0)) / endVal,2/3);
+    	if(useFeedback) {    		
+    		// ramp down at the end of this leg of travel
+    		// coefficient = Math.pow((endVal - Robot.drivetrain.getRightEncoderPos(0)) / endVal,2/3);  // this won't really work any more because endVal is not relative to resetting encoders to zero    		
+    		coefficient = Math.abs( distThisLeg - Robot.drivetrain.getRightEncoderPos(0)) / 2000;    		
     		coefficient = Robot.drivetrain.thresholdVBus(coefficient);
     	}
     	
@@ -64,9 +77,19 @@ public class DriveStraightGyro extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	if(useFeedback) {
-    		return Math.abs(Robot.drivetrain.getRightEncoderPos(0)) >= Math.abs(endVal);
+    		// have we gone far enough?
+    		if(Math.signum(vBus) < 0) {
+    			return Robot.drivetrain.getRightEncoderPos(0) <= endVal;
+    		} else {
+    			return Robot.drivetrain.getRightEncoderPos(0) >= endVal;
+    		}
+    		
     	}
         return isTimedOut();
+    }
+    
+    public boolean exposedIsFinished() {
+    	return isFinished();
     }
 
     // Called once after isFinished returns true
