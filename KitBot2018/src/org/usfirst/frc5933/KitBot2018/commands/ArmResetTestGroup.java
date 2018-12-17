@@ -39,7 +39,7 @@ public class ArmResetTestGroup extends CommandGroup {
     	int dips =     	Robot.roborio.readDips();
 
     	// testing
-    	Command eject1 = new EjectCube(.01);
+    	Command eject1 = new EjectCube(.01);  
     	addParallel(eject1);
     	addSequential( new DriveStraightGyro( 100, 0.7, true));
     	addSequential(new WaitForCommand(eject1));
