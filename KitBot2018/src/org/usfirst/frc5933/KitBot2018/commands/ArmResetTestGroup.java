@@ -3,6 +3,7 @@ package org.usfirst.frc5933.KitBot2018.commands;
 import org.usfirst.frc5933.KitBot2018.Robot;
 import org.usfirst.frc5933.KitBot2018.subsystems.Arm.ArmPosition;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -37,6 +38,14 @@ public class ArmResetTestGroup extends CommandGroup {
       	// read DIPs
     	int dips =     	Robot.roborio.readDips();
 
+    	// testing
+    	Command eject1 = new EjectCube(.01);  
+    	addParallel(eject1);
+    	addSequential( new DriveStraightGyro( 100, 0.7, true));
+    	addSequential(new WaitForCommand(eject1));
+    	addSequential( new DriveStraightGyro( -50, -0.5, true));
+    	addSequential( new DriveStraightGyro( 50, 0.3, true));
+
 		SmartDashboard.putNumber("DDDDDDIIIIIIPPPPPPPs: ", dips);
     	// testing distances traveled compared to distances set, 12/12/18, in GTI hallway
     	// first test set, 36 desired: 49.5 traveled; second run 51; third 54; fourth 50. so multiply (desired inches)  by (36 / 50)
@@ -65,6 +74,7 @@ public class ArmResetTestGroup extends CommandGroup {
     	*/
 		
     	
+		/*
     	// 
     	// set of commands to deliver cube to step
     	//
@@ -99,7 +109,7 @@ public class ArmResetTestGroup extends CommandGroup {
     	// since the DriveStraight only seems to work every other time, hit the command twice
     	addSequential( new DriveStraightGyro( (28*12 +10.5*12)*240/258, 1.0, true)); 
     	addSequential( new DriveStraightGyro( (28*12 +10.5*12)*240/258, 1.0, true)); 
-
+*/
     }
     
     private void testResettingArm() {
