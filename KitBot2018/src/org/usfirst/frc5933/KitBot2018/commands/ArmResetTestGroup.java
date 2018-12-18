@@ -38,12 +38,25 @@ public class ArmResetTestGroup extends CommandGroup {
       	// read DIPs
     	int dips =     	Robot.roborio.readDips();
 
-    	// testing
-    	Command eject1 = new EjectCube(.01);  
+    	// testing.  An example of how to start a command in parallel, then use WaitForCommand to wait 
+    	// until the command finishes.  We may use this by setting a DriveStraightGyro in 
+    	// parallel, then doing other stuff, then waiting for the robot to arrive at its
+    	// destination before continuing to the next addSequential( Command)
+    	Command eject1 = new EjectCube(1); // do a relatively long thing  
     	addParallel(eject1);
-    	addSequential( new DriveStraightGyro( 100, 0.7, true));
-    	addSequential(new WaitForCommand(eject1));
-    	addSequential( new DriveStraightGyro( -50, -0.5, true));
+    	addSequential( new DriveStraightGyro( 100, 0.7, true)); // do a relatively short thing
+    	addSequential(new WaitForCommand(eject1)); // wait for the command (long thing) to finish
+    	addSequential( new DriveStraightGyro( -50, -0.2, true)); // do the next thing
+    	addSequential( new DriveStraightGyro( 50, 0.3, true));
+
+    	// testing.  An example of how to run a command's DefaultCommand, i.e. so its execute() runs repeatedly,
+    	// in autonomous.  This causes a printout to the console (in Arm.java subsystem, the method
+    	// that's called by DefaultArm's execute()) to keep printing while DriveStraightGyro() goes.
+    	// also proves we can reset the blind counter and just continue to print
+    	addSequential( new ArmTestResetBlindCounter());
+    	addParallel( new DefaultArm());
+    	addSequential( new DriveStraightGyro( -50, -0.2, true));
+    	addSequential( new ArmTestResetBlindCounter());
     	addSequential( new DriveStraightGyro( 50, 0.3, true));
 
 		SmartDashboard.putNumber("DDDDDDIIIIIIPPPPPPPs: ", dips);
@@ -55,7 +68,7 @@ public class ArmResetTestGroup extends CommandGroup {
 
 		/*
 		//
-		// set of commands to deliver cube to alcove
+		// set of commands to deliver cube to alcove, AMES Fall Classic 2018
 		//
     	// drive 28+8.5+2' to take cube into alcove
     	// since the DriveStraight only seems to work every other time, hit the command twice
@@ -69,14 +82,14 @@ public class ArmResetTestGroup extends CommandGroup {
     	addSequential( new DriveStraightGyro( -18, -0.7, true)); 
     	addSequential( new DriveStraightGyro( -18, -0.7, true)); 
     	//
-    	// end deliver to alcove
+    	// end set of commands to deliver to alcove
     	//
     	*/
 		
     	
 		/*
     	// 
-    	// set of commands to deliver cube to step
+    	// set of commands to deliver cube to step, AMES Fall Classic 2018
     	//
     	// drive 68*4 + (28*12-68*4)/2 to aim at step
     	addSequential( new DriveStraightGyro( (68*4 + (28*12-68*4)/2) *240 / 258, 0.7, true));
@@ -108,7 +121,10 @@ public class ArmResetTestGroup extends CommandGroup {
     	// drive into the sunset
     	// since the DriveStraight only seems to work every other time, hit the command twice
     	addSequential( new DriveStraightGyro( (28*12 +10.5*12)*240/258, 1.0, true)); 
-    	addSequential( new DriveStraightGyro( (28*12 +10.5*12)*240/258, 1.0, true)); 
+    	addSequential( new DriveStraightGyro( (28*12 +10.5*12)*240/258, 1.0, true));
+    	//
+    	// end set of commands to deliver cube to alcove
+    	//
 */
     }
     
