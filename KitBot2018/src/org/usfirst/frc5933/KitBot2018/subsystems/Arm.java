@@ -26,6 +26,8 @@ public class Arm extends Subsystem {
 	private static final double kI = 0;//0.001;
 	private static final double kD = 0;
 	private static final double kF = 0;
+	
+	public int blindCounter = 0; // testing 12/17/18
 
 	/**
 	 * The ArmPositions correspond to absolute positions on an encoder
@@ -124,7 +126,11 @@ public class Arm extends Subsystem {
 	 * @param continuousInput
 	 */
 	public void maintainLastArmPosition(double continuousInput) {
-		armPositionControl(lastPos, continuousInput);
+		// commenting out 12/17/18 to test running Default.java Commands 
+		// in autonomous
+		// armPositionControl(lastPos, continuousInput);  // 12/17/18
+		System.out.println( "In maintainLastArmPosition call # " + blindCounter);
+		blindCounter ++;
 	}
 
 	/**
